@@ -24,8 +24,10 @@ def mains(choice):
         case "Selection sort ":
                 selection = choice
             
-        case "Select All ":
+        case "Select All(seperated) ":
                 selection = choice
+        case "Selected all(Together) ":
+            selection = choice
 
 def graphsavestate(choice):
     global savegraph
@@ -51,9 +53,12 @@ def Confirmed():
         case "Selection sort ":
                 print(selection)
                 graph_s()
-        case "Select All ":
+        case "Select All(seperated) ":
                 print(selection)
                 graph_a()
+        case "Selected all(Together) ":
+                print(selection)
+                graph_a_sep()
 #---GRAPH FUNCTIONS---#
 
 #---linear search ---#
@@ -112,8 +117,8 @@ def graph_b():
         bubblesort(a)
         end = time.time()
         times.append(end - start)
-    label_2.configure(text = end - start)
-    label_5.configure(text = "Seconds")
+    timer = str(end - start) + " seconds"
+    label_2.configure(text = timer)
     print("Sorted in", end - start, " seconds")
 
     elements = np.array([i * 100 for i in range(1,20)])
@@ -126,6 +131,7 @@ def graph_b():
     plt.tight_layout()
     plt.show()
 
+
 #--graph for selection sort--#
 def graph_s():
     plt.close('all')
@@ -136,8 +142,8 @@ def graph_s():
         selectionsort(a)
         end = time.time()
         times.append(end - start)
-    label_2.configure(text = end - start)
-    label_5.configure(text = "Seconds")
+    timer = str(end - start) + " seconds"
+    label_2.configure(text = timer)
     print("Sorted in", end - start, " seconds")
     
     elements = np.array([i * 100 for i in range(1,20)])
@@ -149,6 +155,7 @@ def graph_s():
     plt.tight_layout()
     plt.show()
 
+
 #--graph for linear search--#
 def graph_l():
     plt.close('all')
@@ -159,8 +166,8 @@ def graph_l():
         linearsearch(a,1)
         end = time.time()
         times.append(end - start)
-    label_2.configure(text = end - start)
-    label_5.configure(text = "Seconds")
+    timer = str(end - start) + " seconds"
+    label_2.configure(text = timer)
     print("Sorted in", end - start, " seconds")
     
     elements = np.array([i * 100 for i in range(1,20)])
@@ -248,8 +255,83 @@ def graph_a():
         print("graph saved")
         plt.savefig("all in one graph.png")
     plt.show()              
-                
+
+
+def graph_a_sep():
+    plt.close('all')
+    times1 = list()
+    for i in range(1,40):
+        start = time.time()
+        a = np.random.randint(1000, size = i * 1000)
+        linearsearch(a,1)
+        end = time.time()
+        times1.append(end - start)
+    print("lineat search in", end - start, " seconds")
+#----------------------------------------------------------------#
+    times2 = list()
+    for j in range(1,20):
+        start = time.time()
+        a = np.random.randint(100, size = j * 100)
+        bubblesort(a)
+        end = time.time()
+        times2.append(end - start)
+    print("bubble Sorted in", end - start, " seconds")
+#----------------------------------------------------------------#
+    times3 = list()
+    for k in range(1,20):
+        start = time.time()
+        a = np.random.randint(100, size = k * 100)
+        selectionsort(a)
+        end = time.time()
+        times3.append(end - start)
+    print("selection Sorted in", end - start, " seconds")
+#----------------------------------------------------------------#
+#    times4 = list()
+#    a.sort()
+#    for k in range(1,20):
+#        start = time.time()
+#        a = np.random.randint(1000, size = k * 1000)
+#        binarysearch(a,1)
+#        end = time.time()
+#        times4.append(end - start)
+#    print("selection Sorted in", end - start, " seconds")
+#----------------------------------------------------------------#
+    elements1 = np.array([i * 100 for i in range(1,40)])
+    elements2 = np.array([i * 100 for i in range(1,20)])
+    elements3 = np.array([i * 200 for i in range(1,20)])
+    #elements4 = np.array([i * 200 for i in range(1,20)])
+#----------------------------------------------------------------#
+    ax = plt.subplot(1,1,1)
+    ax.set_title("All Graphes in one",fontsize=10)
     
+    ax1 = plt.subplot(1,1,1)
+    #ax1.set_title("Bubble sort",fontsize=10)
+    
+    ax2 = plt.subplot(1,1,1)
+    #ax2.set_title("Selection sort",fontsize=10)
+    
+    #ax3 = plt.subplot(1,1,1)
+    #ax3.set_title("Selection sort",fontsize=10)
+#----------------------------------------------------------------#  
+    ax.plot(elements1,times1,label = "Linear search")
+    ax1.plot(elements2,times2,label = "Bubble sort")
+    ax2.plot(elements3,times3,label = "Selection sort")
+    #ax3.plot(elements4,times4,label = "binary search")
+#----------------------------------------------------------------#   
+    ax.legend()
+    ax1.legend()
+    ax2.legend()
+    #ax3.legend()
+     
+    plt.tight_layout()
+    label_2.configure(text ="Cannot Compute Time for this option")
+    print(savegraph)
+    if savegraph == True:
+        print("graph saved")
+        plt.savefig("all in one graph.png")
+    plt.show()                
+    
+
 #---APP CONFIGS---#
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -257,6 +339,7 @@ ctk.set_default_color_theme("blue")
 app = ctk.CTk()
 app.geometry("400x500")
 app.minsize(400,500)
+app.maxsize(400,500)
 app.title("Sorting Algorithms")
 #app.iconbitmap('icon.ico')
 
@@ -276,10 +359,10 @@ frame_1.pack(anchor = tkk.CENTER,
               expand = True)
 
 frame_2 = ctk.CTkFrame(frame_1,
-                       width = 350,
-                       height = 100,
+                       width = 315,
+                       height = 85,
                        fg_color= "white",
-                       corner_radius = 64)
+                       corner_radius = 30)
 
 frame_2.place(relx = .5, rely = .30, anchor = tkk.CENTER)
                        
@@ -295,7 +378,7 @@ title_1.place(relx = .5,rely = .1,anchor = tkk.CENTER)
 label_1 = ctk.CTkLabel(frame_2,
                        text = "Time Complexity",
                        text_color = "black",
-                       font = ("Roboto Mono", 20),
+                       font = ("Roboto Mono", 17),
                        anchor = tkk.CENTER)
 
 label_1.place(relx = .5,rely = .15,anchor = tkk.CENTER)
@@ -304,10 +387,10 @@ label_1.place(relx = .5,rely = .15,anchor = tkk.CENTER)
 label_2 = ctk.CTkLabel(frame_2,
                        text = "",
                        text_color = "black",
-                       font = ("Roboto", 15),
+                       font = ("Roboto", 18),
                        anchor = tkk.CENTER)
 
-label_2.place(relx = .5,rely = .50,anchor = tkk.CENTER)                 
+label_2.place(relx = .5,rely = .60,anchor = tkk.CENTER)                 
 
 
 label_3 = ctk.CTkLabel(frame_1,
@@ -327,23 +410,13 @@ label_4 = ctk.CTkLabel(frame_1,
 
 label_4.place(relx = .30 ,rely = .65, anchor = tkk.CENTER)
           
-
-label_5 = ctk.CTkLabel(frame_2,
-                       text = "",
-                       text_color = "black",
-                       font = ("Roboto", 20),
-                       bg_color="transparent",
-                       fg_color="transparent",
-                       anchor = tkk.CENTER
-                       )
-
-label_5.place(relx = .5,rely = .85,anchor = tkk.CENTER)    
+   
                        
 options_1 = ctk.CTkOptionMenu(frame_1,
                               height = 30,
                               width = 60,
-                              font = ("Roboto", 15),
-                              values = ["Bubble Sort ","Linear Search ","Selection sort ","Select All "],
+                              font = ("Roboto", 12),
+                              values = ["Bubble Sort ","Linear Search ","Selection sort ","Select All(seperated) ","Selected all(Together) "],
                               #values = ["1","2"],
                               anchor = tkk.CENTER,
                               dynamic_resizing = True,
@@ -365,7 +438,7 @@ options_2 = ctk.CTkOptionMenu(frame_1,
                               command=graphsavestate
                               )
 
-options_2.place(relx =.75, rely = .65, anchor = tkk.CENTER)
+options_2.place(relx =.80, rely = .65, anchor = tkk.CENTER)
 
 
 button_1 = ctk.CTkButton(frame_1,
