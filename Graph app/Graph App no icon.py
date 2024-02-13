@@ -180,8 +180,8 @@ def graph_l():
     plt.tight_layout()
     plt.show()
 
-#--Graph for all--#
-#----------------------------------------------------------------#
+
+#---Graph for all Seprated---#
 def graph_a():
     plt.close('all')
     times1 = list()
@@ -257,6 +257,7 @@ def graph_a():
     plt.show()              
 
 
+#---Graph for all Combined---#
 def graph_a_sep():
     plt.close('all')
     times1 = list()
