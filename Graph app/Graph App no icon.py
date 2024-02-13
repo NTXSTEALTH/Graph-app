@@ -359,8 +359,8 @@ frame_1.pack(anchor = tkk.CENTER,
               expand = True)
 
 frame_2 = ctk.CTkFrame(frame_1,
-                       width = 315,
-                       height = 85,
+                       width = 310,
+                       height = 75,
                        fg_color= "white",
                        corner_radius = 30)
 
