@@ -26,11 +26,14 @@ def mains(choice):
         
         case "Insertion sort ":
                 selection = choice
+                
+        case "Binary search ":
+                selection = choice
             
         case "Select All(seperated) ":
-            
                 selection = choice
-        case "Selected all(Together) ":
+                
+        case "Selected all(Sorting) ":
                 selection = choice
 
 def graphsavestate(choice):
@@ -60,12 +63,15 @@ def Confirmed():
         case "Insertion sort ":
                 print(selection)
                 graph_i()
+        case "Binary search ":
+                print(selection)
+                graph_bi()
         case "Select All(seperated) ":
                 print(selection)
-                graph_a()
-        case "Selected all(Together) ":
-                print(selection)
                 graph_a_sep()
+        case "Selected all(Sorting) ":
+                print(selection)
+                graph_a()
                 
                 
                 
@@ -101,19 +107,17 @@ def selectionsort(a):
 
 
 #--binary search ---#
-def binarysearch(a,k):
-    low = 0
-    high = len(a) - 1
-    while low <= high:
+def binarysearch(a, low, high, k):
+    if low <= high:
         mid = (low + high) // 2
         if a[mid] == k:
             return mid
-        elif  k < a[mid]:
-            high = mid - 1
+        elif a[mid] > k:
+            return binarysearch(a, k, low, mid - 1)
         else:
-            low = mid + 1
-    return -1
-
+            return binarysearch(a, k, mid + 1, high)
+    else:
+        print("search unsuccessful")
 
 def insertion(a):
     n = len(a)
@@ -192,11 +196,11 @@ def graph_i():
     print("Sorted in", end - start, " seconds")
     
     elements = np.array([i * 100 for i in range(1,20)])
-    plt.plot(elements,times,label = "Selection sort")
+    plt.plot(elements,times,label = "insertion sort")
     plt.legend()
     print(savegraph)
     if savegraph == True:
-        plt.savefig("selection sort graph.png")
+        plt.savefig("insertion sort graph.png")
     plt.tight_layout()
     plt.show()
 
@@ -208,7 +212,7 @@ def graph_l():
     times = list()
     for i in range(1,20):
         start = time.time()
-        a = np.random.randint(1000, size = i * 1000)
+        a = np.random.randint(100, size = i * 100)
         linearsearch(a,1)
         end = time.time()
         times.append(end - start)
@@ -218,7 +222,6 @@ def graph_l():
     
     elements = np.array([i * 100 for i in range(1,20)])
     plt.plot(elements,times,label = "liner search")
-    plt.grid()
     plt.legend()
      
     if savegraph == True:
@@ -227,13 +230,35 @@ def graph_l():
     plt.show()
 
 
-#---Graph for all Seprated---#
-def graph_a():
+def graph_bi():
+    plt.close('all')
+    times = list()
+    for i in range(1,20):
+        start = time.time()
+        a = np.random.randint(100, size = i * 100)
+        binarysearch(a,0,len(a)-1,1)
+        end = time.time()
+        times.append(end - start)
+    timer = str(end - start) + " seconds"
+    label_2.configure(text = timer)
+    print("Sorted in", end - start, " seconds")
+    
+    elements = np.array([i * 100 for i in range(1,20)])
+    plt.plot(elements,times,label = "binary search")
+    plt.legend()
+     
+    if savegraph == True:
+        plt.savefig("binary search graph.png")
+    plt.tight_layout()
+    plt.show()
+
+#---Graph for all Seperated---#
+def graph_a_sep():
     plt.close('all')
     times1 = list()
-    for i in range(1,10):
+    for i in range(1,20):
         start = time.time()
-        a = np.random.randint(1000, size = i * 1000)
+        a = np.random.randint(200, size = i * 200)
         linearsearch(a,1)
         end = time.time()
         times1.append(end - start)
@@ -261,15 +286,15 @@ def graph_a():
     a.sort()
     for k in range(1,20):
         start = time.time()
-        a = np.random.randint(1000, size = k * 1000)
-        binarysearch(a,1)
+        a = np.random.randint(200, size = k * 200)
+        binarysearch(a,0,len(a)-1,k)
         end = time.time()
         times4.append(end - start)
-    print("selection Sorted in", end - start, " seconds")
+    print("Binary Search in", end - start, " seconds")
 #----------------------------------------------------------------#
-    elements1 = np.array([i * 100 for i in range(1,10)])
+    elements1 = np.array([i * 200 for i in range(1,20)])
     elements2 = np.array([i * 100 for i in range(1,20)])
-    elements3 = np.array([i * 200 for i in range(1,20)])
+    elements3 = np.array([i * 100 for i in range(1,20)])
     elements4 = np.array([i * 200 for i in range(1,20)])
 #----------------------------------------------------------------#
     ax = plt.subplot(2,2,1)
@@ -282,12 +307,12 @@ def graph_a():
     ax2.set_title("Selection sort",fontsize=10)
     
     ax3 = plt.subplot(2,2,4)
-    ax3.set_title("Selection sort",fontsize=10)
+    ax3.set_title("Binary sort",fontsize=10)
 #----------------------------------------------------------------#  
     ax.plot(elements1,times1,label = "Linear search")
     ax1.plot(elements2,times2,label = "Bubble sort")
     ax2.plot(elements3,times3,label = "Selection sort")
-    ax3.plot(elements4,times4,label = "binary search")
+    ax3.plot(elements4,times4,label = "Binary search")
 #----------------------------------------------------------------#   
     ax.legend()
     ax1.legend()
@@ -304,16 +329,16 @@ def graph_a():
 
 
 #---Graph for all Combined---#
-def graph_a_sep():
+def graph_a():
     plt.close('all')
     times1 = list()
-    for i in range(1,40):
+    for i in range(1,20):
         start = time.time()
-        a = np.random.randint(1000, size = i * 1000)
-        insertion(a,1)
+        a = np.random.randint(100, size = i * 100)
+        insertion(a)
         end = time.time()
         times1.append(end - start)
-    print("lineat search in", end - start, " seconds")
+    print("Insertion sorted in", end - start, " seconds")
 #----------------------------------------------------------------#
     times2 = list()
     for j in range(1,20):
@@ -343,9 +368,9 @@ def graph_a_sep():
 #        times4.append(end - start)
 #    print("selection Sorted in", end - start, " seconds")
 #----------------------------------------------------------------#
-    elements1 = np.array([i * 100 for i in range(1,40)])
+    elements1 = np.array([i * 150 for i in range(1,20)])
     elements2 = np.array([i * 100 for i in range(1,20)])
-    elements3 = np.array([i * 200 for i in range(1,20)])
+    elements3 = np.array([i * 150 for i in range(1,20)])
     #elements4 = np.array([i * 200 for i in range(1,20)])
 #----------------------------------------------------------------#
     ax = plt.subplot(1,1,1)
@@ -360,7 +385,7 @@ def graph_a_sep():
     #ax3 = plt.subplot(1,1,1)
     #ax3.set_title("Selection sort",fontsize=10)
 #----------------------------------------------------------------#  
-    ax.plot(elements1,times1,label = "Linear search")
+    ax.plot(elements1,times1,label = "Insertion sort")
     ax1.plot(elements2,times2,label = "Bubble sort")
     ax2.plot(elements3,times3,label = "Selection sort")
     #ax3.plot(elements4,times4,label = "binary search")
@@ -412,6 +437,7 @@ frame_2 = ctk.CTkFrame(frame_1,
                        corner_radius = 30)
 
 frame_2.place(relx = .5, rely = .30, anchor = tkk.CENTER)
+    
                        
 #---UI Elements---#
 title_1 = ctk.CTkLabel(frame_1,
@@ -456,14 +482,13 @@ label_4 = ctk.CTkLabel(frame_1,
                        anchor = tkk.CENTER)
 
 label_4.place(relx = .30 ,rely = .65, anchor = tkk.CENTER)
-          
-   
+            
                        
 options_1 = ctk.CTkOptionMenu(frame_1,
                               height = 30,
                               width = 60,
                               font = ("Roboto", 12),
-                              values = ["Bubble Sort ","Linear Search ","Selection sort ","Insertion sort ", "Select All(seperated) ","Selected all(Together) "],
+                              values = ["Bubble Sort ","Linear Search ","Selection sort ","Insertion sort ","Binary search ", "Select All(seperated) ","Selected all(Sorting) "],
                               #values = ["1","2"],
                               anchor = tkk.CENTER,
                               dynamic_resizing = True,
