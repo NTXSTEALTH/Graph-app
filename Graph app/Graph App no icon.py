@@ -23,11 +23,15 @@ def mains(choice):
             
         case "Selection sort ":
                 selection = choice
+        
+        case "Insertion sort ":
+                selection = choice
             
         case "Select All(seperated) ":
+            
                 selection = choice
         case "Selected all(Together) ":
-            selection = choice
+                selection = choice
 
 def graphsavestate(choice):
     global savegraph
@@ -53,12 +57,18 @@ def Confirmed():
         case "Selection sort ":
                 print(selection)
                 graph_s()
+        case "Insertion sort ":
+                print(selection)
+                graph_i()
         case "Select All(seperated) ":
                 print(selection)
                 graph_a()
         case "Selected all(Together) ":
                 print(selection)
                 graph_a_sep()
+                
+                
+                
 #---GRAPH FUNCTIONS---#
 
 #---linear search ---#
@@ -105,6 +115,17 @@ def binarysearch(a,k):
     return -1
 
 
+def insertion(a):
+    n = len(a)
+    for i in range(1, n):
+        key = a[i]
+        j = i - 1
+        while j >= 0 and a[j] > key:
+            a[j+1] = a[j]
+            j = j - 1
+        a[j+1] = key
+        
+        
 #//Graphs\\#
 
 #--graph for bubble sort--#
@@ -154,6 +175,31 @@ def graph_s():
         plt.savefig("selection sort graph.png")
     plt.tight_layout()
     plt.show()
+
+
+#--Graph for insertion sort---#
+def graph_i():
+    plt.close('all')
+    times = list()
+    for i in range(1,20):
+        start = time.time()
+        a = np.random.randint(100, size = i * 100)
+        insertion(a)
+        end = time.time()
+        times.append(end - start)
+    timer = str(end - start) + " seconds"
+    label_2.configure(text = timer)
+    print("Sorted in", end - start, " seconds")
+    
+    elements = np.array([i * 100 for i in range(1,20)])
+    plt.plot(elements,times,label = "Selection sort")
+    plt.legend()
+    print(savegraph)
+    if savegraph == True:
+        plt.savefig("selection sort graph.png")
+    plt.tight_layout()
+    plt.show()
+
 
 
 #--graph for linear search--#
@@ -264,7 +310,7 @@ def graph_a_sep():
     for i in range(1,40):
         start = time.time()
         a = np.random.randint(1000, size = i * 1000)
-        linearsearch(a,1)
+        insertion(a,1)
         end = time.time()
         times1.append(end - start)
     print("lineat search in", end - start, " seconds")
@@ -417,7 +463,7 @@ options_1 = ctk.CTkOptionMenu(frame_1,
                               height = 30,
                               width = 60,
                               font = ("Roboto", 12),
-                              values = ["Bubble Sort ","Linear Search ","Selection sort ","Select All(seperated) ","Selected all(Together) "],
+                              values = ["Bubble Sort ","Linear Search ","Selection sort ","Insertion sort ", "Select All(seperated) ","Selected all(Together) "],
                               #values = ["1","2"],
                               anchor = tkk.CENTER,
                               dynamic_resizing = True,
