@@ -75,7 +75,7 @@ def Confirmed():
                 
                 
                 
-#---GRAPH FUNCTIONS---#
+#---GRAPH_FUNCTIONS---#
 
 #---linear search ---#
 def linearsearch(a,k):
@@ -106,6 +106,17 @@ def selectionsort(a):
         a[i], a[min] = a[min], a[i]
 
 
+def insertionsort(a):
+    n = len(a)
+    for i in range(1, n):
+        key = a[i]
+        j = i - 1
+        while j >= 0 and a[j] > key:
+            a[j+1] = a[j]
+            j = j - 1
+        a[j+1] = key
+
+
 #--binary search ---#
 def binarysearch(a, low, high, k):
     if low <= high:
@@ -117,20 +128,10 @@ def binarysearch(a, low, high, k):
         else:
             return binarysearch(a, k, mid + 1, high)
     else:
-        print("search unsuccessful")
-
-def insertion(a):
-    n = len(a)
-    for i in range(1, n):
-        key = a[i]
-        j = i - 1
-        while j >= 0 and a[j] > key:
-            a[j+1] = a[j]
-            j = j - 1
-        a[j+1] = key
+        print("search unsuccessful")      
+      
         
-        
-#//Graphs\\#
+#__GRAPHS__#
 
 #--graph for bubble sort--#
 def graph_b():
@@ -188,7 +189,7 @@ def graph_i():
     for i in range(1,20):
         start = time.time()
         a = np.random.randint(100, size = i * 100)
-        insertion(a)
+        insertionsort(a)
         end = time.time()
         times.append(end - start)
     timer = str(end - start) + " seconds"
@@ -212,7 +213,7 @@ def graph_l():
     times = list()
     for i in range(1,20):
         start = time.time()
-        a = np.random.randint(100, size = i * 100)
+        a = np.random.randint(100, size = i * 1000)
         linearsearch(a,1)
         end = time.time()
         times.append(end - start)
@@ -220,7 +221,7 @@ def graph_l():
     label_2.configure(text = timer)
     print("Sorted in", end - start, " seconds")
     
-    elements = np.array([i * 100 for i in range(1,20)])
+    elements = np.array([i * 1000 for i in range(1,20)])
     plt.plot(elements,times,label = "liner search")
     plt.legend()
      
@@ -235,7 +236,7 @@ def graph_bi():
     times = list()
     for i in range(1,20):
         start = time.time()
-        a = np.random.randint(100, size = i * 100)
+        a = np.random.randint(100, size = i * 1000)
         binarysearch(a,0,len(a)-1,1)
         end = time.time()
         times.append(end - start)
@@ -243,7 +244,7 @@ def graph_bi():
     label_2.configure(text = timer)
     print("Sorted in", end - start, " seconds")
     
-    elements = np.array([i * 100 for i in range(1,20)])
+    elements = np.array([i * 1000 for i in range(1,20)])
     plt.plot(elements,times,label = "binary search")
     plt.legend()
      
@@ -252,50 +253,43 @@ def graph_bi():
     plt.tight_layout()
     plt.show()
 
+
 #---Graph for all Seperated---#
 def graph_a_sep():
     plt.close('all')
+    
+    x = np.array([i * 1000 for i in range(1,10)])
     times1 = list()
-    for i in range(1,20):
+    times2 = list()
+    times3 = list()
+    times4 = list()
+    
+    for i in range(1,10):
+        
         start = time.time()
         a = np.random.randint(200, size = i * 200)
         linearsearch(a,1)
         end = time.time()
         times1.append(end - start)
-    print("lineat search in", end - start, " seconds")
-#----------------------------------------------------------------#
-    times2 = list()
-    for j in range(1,20):
+        
         start = time.time()
-        a = np.random.randint(100, size = j * 100)
+        a = np.random.randint(200, size = i * 200)
         bubblesort(a)
         end = time.time()
         times2.append(end - start)
-    print("bubble Sorted in", end - start, " seconds")
-#----------------------------------------------------------------#
-    times3 = list()
-    for k in range(1,20):
+        
         start = time.time()
-        a = np.random.randint(100, size = k * 100)
-        selectionsort(a)
+        a = np.random.randint(200, size = i * 200)
+        insertionsort(a)
         end = time.time()
         times3.append(end - start)
-    print("selection Sorted in", end - start, " seconds")
-#----------------------------------------------------------------#
-    times4 = list()
-    a.sort()
-    for k in range(1,20):
+        
         start = time.time()
-        a = np.random.randint(200, size = k * 200)
-        binarysearch(a,0,len(a)-1,k)
+        a = np.random.randint(200, size = i * 200)
+        selectionsort(a)
         end = time.time()
         times4.append(end - start)
-    print("Binary Search in", end - start, " seconds")
-#----------------------------------------------------------------#
-    elements1 = np.array([i * 200 for i in range(1,20)])
-    elements2 = np.array([i * 100 for i in range(1,20)])
-    elements3 = np.array([i * 100 for i in range(1,20)])
-    elements4 = np.array([i * 200 for i in range(1,20)])
+    
 #----------------------------------------------------------------#
     ax = plt.subplot(2,2,1)
     ax.set_title("linear search",fontsize=10)
@@ -309,11 +303,12 @@ def graph_a_sep():
     ax3 = plt.subplot(2,2,4)
     ax3.set_title("Binary sort",fontsize=10)
 #----------------------------------------------------------------#  
-    ax.plot(elements1,times1,label = "Linear search")
-    ax1.plot(elements2,times2,label = "Bubble sort")
-    ax2.plot(elements3,times3,label = "Selection sort")
-    ax3.plot(elements4,times4,label = "Binary search")
-#----------------------------------------------------------------#   
+    ax.plot(x,times1,label = "Linear search")
+    ax1.plot(x,times2,label = "Bubble sort")
+    ax2.plot(x,times3,label = "Selection sort")
+    ax3.plot(x,times4,label = "Binary search")
+#----------------------------------------------------------------# 
+ 
     ax.legend()
     ax1.legend()
     ax2.legend()
@@ -331,69 +326,44 @@ def graph_a_sep():
 #---Graph for all Combined---#
 def graph_a():
     plt.close('all')
+    x = np.array([i * 1000 for i in range(1,10)])
     times1 = list()
-    for i in range(1,20):
+    times2 = list()
+    times3 = list()
+    for i in range(1,10):
+        
         start = time.time()
         a = np.random.randint(100, size = i * 100)
-        insertion(a)
-        end = time.time()
-        times1.append(end - start)
-    print("Insertion sorted in", end - start, " seconds")
-#----------------------------------------------------------------#
-    times2 = list()
-    for j in range(1,20):
-        start = time.time()
-        a = np.random.randint(100, size = j * 100)
         bubblesort(a)
         end = time.time()
-        times2.append(end - start)
-    print("bubble Sorted in", end - start, " seconds")
-#----------------------------------------------------------------#
-    times3 = list()
-    for k in range(1,20):
+        times1.append(end - start)
+        
         start = time.time()
-        a = np.random.randint(100, size = k * 100)
+        a = np.random.randint(100, size = i * 100)
         selectionsort(a)
         end = time.time()
+        times2.append(end - start)
+        
+        start = time.time()
+        a = np.random.randint(100, size = i * 100)
+        insertionsort(a)
+        end = time.time()
         times3.append(end - start)
-    print("selection Sorted in", end - start, " seconds")
-#----------------------------------------------------------------#
-#    times4 = list()
-#    a.sort()
-#    for k in range(1,20):
-#        start = time.time()
-#        a = np.random.randint(1000, size = k * 1000)
-#        binarysearch(a,1)
-#        end = time.time()
-#        times4.append(end - start)
-#    print("selection Sorted in", end - start, " seconds")
-#----------------------------------------------------------------#
-    elements1 = np.array([i * 150 for i in range(1,20)])
-    elements2 = np.array([i * 100 for i in range(1,20)])
-    elements3 = np.array([i * 150 for i in range(1,20)])
-    #elements4 = np.array([i * 200 for i in range(1,20)])
+        
+    print("Insertion sorted in", end - start, " seconds")
 #----------------------------------------------------------------#
     ax = plt.subplot(1,1,1)
-    ax.set_title("All Graphes in one",fontsize=10)
-    
     ax1 = plt.subplot(1,1,1)
-    #ax1.set_title("Bubble sort",fontsize=10)
-    
     ax2 = plt.subplot(1,1,1)
-    #ax2.set_title("Selection sort",fontsize=10)
-    
-    #ax3 = plt.subplot(1,1,1)
-    #ax3.set_title("Selection sort",fontsize=10)
+    ax.set_title("All Graphes in one",fontsize=10)
 #----------------------------------------------------------------#  
-    ax.plot(elements1,times1,label = "Insertion sort")
-    ax1.plot(elements2,times2,label = "Bubble sort")
-    ax2.plot(elements3,times3,label = "Selection sort")
-    #ax3.plot(elements4,times4,label = "binary search")
+    ax.plot(x,times1,label = "Insertion sort")
+    ax1.plot(x,times2,label = "Bubble sort")
+    ax2.plot(x,times3,label = "Selection sort")
 #----------------------------------------------------------------#   
     ax.legend()
     ax1.legend()
     ax2.legend()
-    #ax3.legend()
      
     plt.tight_layout()
     label_2.configure(text ="Cannot Compute Time for this option")
